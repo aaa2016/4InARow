@@ -1,20 +1,33 @@
 
 // default game board is 7x6
 var boardCols = 7;
-var boardRows = 6; // not counting row for input buttons
+var boardRows = 6; // not including row for input buttons
+var maxCells = boardCols * boardRows;
 
 var winningRun = 4; // need 4 in a row to win
 var gameOver = false; // state for when the game ends
+var redsTurn = true; // red goes first
+
+// counters for pieces dropped
+var redPieces = 0;
+var bluePieces = 0;
+
+var winner = "";
 
 ///////////////////////////////////////
 
 function newGame() {
 
+	// reset variables and messages, create new board
 	gameOver = false;
 	document.getElementById("game-board").innerHTML = "";
 	createGameBoard(boardCols, boardRows);
 	document.getElementById("message-area").innerHTML = "New game started.";
-	
+	gameOver = false;
+	redsTurn = true;
+	redPieces = 0;
+	bluePieces = 0;
+	winner = "";
 	
 };
 
@@ -22,8 +35,7 @@ function newGame() {
 
 function createGameBoard(cols, rows) {
 
-	//document.getElementById("game-board").innerHTML = cols + "x" + rows + 
-	//	" game board goes here.";
+	// creates game board at table, each cell has id in format "0,0"
 	
 	var gameBoard = document.getElementById("game-board");
 	
@@ -34,7 +46,7 @@ function createGameBoard(cols, rows) {
   	
   	var cellDiv = document.createElement('DIV');
 
-  	for (var i = 0; i < rows+1; i++) { // note: extra row for buttons
+  	for (var i = 0; i < rows+1; i++) { // note: extra row included for buttons
     	var tr = document.createElement('TR');
     	tableBody.appendChild(tr);
 
@@ -46,14 +58,14 @@ function createGameBoard(cols, rows) {
       		
       		if(i == rows){ // for button row (last row), insert buttons instead
       			//button.innerHTML = "Button "+i+","+j;
-      			button.innerHTML = "Col "+j;
+      			button.innerHTML = "Drop";
       			button.setAttribute("id", j);
       			button.setAttribute("onClick", "dropDisc("+j+")");
       			td.appendChild(button);
       			tr.appendChild(td);
-      		} else {
+      		} else { // create blank cells
       			//cellDiv.innerHTML = "Cell "+i+","+j;
-      			cellDiv.innerHTML = "O";
+      			//cellDiv.innerHTML = "&nbsp;";
       			cellDiv.setAttribute("id", i+","+j);
       			td.appendChild(cellDiv);
       			tr.appendChild(td);
@@ -67,10 +79,62 @@ function createGameBoard(cols, rows) {
 
 ///////////////////////////////////////
 
-function dropDisc(col) {
+function dropDisc(col) { 
 
-	document.getElementById("message-area").innerHTML = "Disc dropped in col "+col;
-	document.getElementById("5,"+col).innerHTML = "X";
+	var discColour = "";
+	var discDiv = document.createElement('DIV'); // element to draw disc
+	
+	var emptyRow = boardRows-1; //starts with lowest row
+	
+	for (emptyRow; emptyRow>=0; emptyRow--) { 
+	
+		// checks if row is empty, otherwise continues to higher row
+		if (document.getElementById(emptyRow+","+col).innerHTML == "") {
+			document.getElementById(emptyRow+","+col).innerHTML = "";
+			
+			// check whose turn it is to set colour
+			if (redsTurn == true) {
+				discColour = "red";
+				redPieces++;
+				redsTurn = false;
+			} else {
+				discColour = "blue";
+				bluePieces++;
+				redsTurn = true;
+			};
+			
+			// set disc colour and add to cell
+			discDiv.setAttribute("class", discColour+"-disc");
+			document.getElementById(emptyRow+","+col).appendChild(discDiv);
+			document.getElementById("message-area").innerHTML = "Disc dropped by "
+				+discColour+" in col "+col+". Total red: "+redPieces+". Total blue: "
+				+bluePieces+".";
+			break; // can exit for loop after first empty cell
+		};
+	
+	};
+	
+	checkWin();
+
+};
+
+///////////////////////////////////////
+
+function checkWin() {
+
+	// TODO: add win state checking
+
+	// if total pieces dropped reach mak number of cells, game is over
+	if ((redPieces+bluePieces) >= (maxCells)) {
+		gameOver = true;
+	};
+
+	// declare if there is a winner or draw
+	if (gameOver == true && winner == ""){
+		document.getElementById("message-area").innerHTML = "Game over - draw!"
+	} else if (gameOver == true && winner != "") {
+		document.getElementById("message-area").innerHTML = "Game over - "+winner+" wins!"
+	};
 
 };
 

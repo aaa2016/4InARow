@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-GB">
+
   <head>
+  
     <title id="pageTitle">4 In A Row</title>
     <meta charset="UTF-8">
     <meta name="description" content="2-player game">
@@ -9,19 +11,25 @@
     
     <script src="4inarow.js"></script>
     
-  </head>
-  
-  <!--#######################################-->
-  
-  <style>
+    <style>
   
     body {font-family: sans-serif}
     h1, p {text-align: center}
     table, td, th {border: 1px solid black; padding: 5px; text-align: center}
+    tr {height: 41px;}
     table {border-collapse: collapse; margin: auto}
-    .game-board {width: 90%; margin: auto}
+    .game-board {width: 50%; margin: auto}
+    .disc, .blue-disc, .red-disc {
+  		height: 30px;
+  		width: 30px;
+  		border-radius: 50%;
+  		margin: auto;
+	}   
+	.blue-disc {background-color: blue;}
+	.red-disc {background-color: red;}
+  	</style>
     
-  </style>
+  </head>
   
   <!--#######################################-->
   
