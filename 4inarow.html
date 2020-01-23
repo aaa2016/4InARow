@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <title id="pageTitle">4 In A Row</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="2-player game">
+    <meta name="keywords" content="">
+    <meta name="author" content="Artur A.">
+    
+    <script src="4inarow.js"></script>
+    
+  </head>
+  
+  <!--#######################################-->
+  
+  <style>
+  
+    body {font-family: sans-serif}
+    h1, p {text-align: center}
+    table, td, th {border: 1px solid black; padding: 5px; text-align: center}
+    table {border-collapse: collapse; margin: auto}
+    .game-board {width: 90%; margin: auto}
+    
+  </style>
+  
+  <!--#######################################-->
+  
+  <body>
+  	
+  	<h1>4 In A Row</h1>
+  	<p><input type=button class="newgame" value="New game" onClick="newGame()" /></p>
+  	<p id="message-area"></p>
+  	<div id="game-board"></div>
+  	
+  </body>
+  
+</html>
